@@ -24,8 +24,11 @@
 
 int main(int argc, char * argv[]) {
   int servSock;
-  struct addrinfo hints, *serverInfo, *index;
+  //struct addrinfo hints, *serverInfo, *index;
   int result;
+  int serverPort;
+  struct sockaddr_in addr_in;
+  socklen_t addr_len;
 
   if (argc < 3) {
 	printf("Usage: ./server port rwnd\n");
@@ -33,40 +36,52 @@ int main(int argc, char * argv[]) {
 	printf("--rwnd: initial receive window of remote client, must be less than 65536\n");
 	return 1;
   }
-
-  memset(&hints, 0, sizeof(struct addrinfo));
-  hints.ai_socktype = SOCK_DGRAM;
-  hints.ai_family   = AF_UNSPEC;
-  hints.ai_flags    = AI_PASSIVE;
-
-  //get address info
-  if ((result = getaddrinfo(NULL, argv[1], &hints, &serverInfo)) != 0) {
-	fprintf(stderr, "get local address with port %s addrinfo failed\n", argv[1]);
-	return 1;
-  }
-
-
-  for (index = serverInfo; index != NULL; index = index->ai_next) {
-	if ((servSock = socket(index->ai_family, index->ai_socktype, index->ai_protocol)) == -1) {
-	  //fprintf(stderr, "create socket for  server %s %s failed\n", argv[1], argv[2]);
-	  continue;
-	}
-	break;
-  }
-
-  if (index == NULL) {
-	fprintf(stderr, "create socket for  port %s failed\n", argv[1]);
-	return 1;
-  }
-
-  if ( (result = bind(servSock, index->ai_addr, index->ai_addrlen)) == -1) {
-	fprintf(stderr, "bind to specific port  %s failed\n", argv[1]);
+  serverPort = atoi(argv[1]);
+  addr_in.sin_port = htons(serverPort);
+  addr_in.sin_family = AF_INET;
+  addr_in.sin_addr.s_addr   = INADDR_ANY;
+  addr_len = sizeof(struct sockaddr);
+  servSock = socket(AF_INET, SOCK_DGRAM, 0);
+  if (bind(servSock, (struct sockaddr *) &addr_in, addr_len)  != 0) {
+	printf("bind failed to port %s\n", argv[1]);
 	return 1;
   } else {
-	printf("bind to port %s successfully\n", argv[1]);
+	printf("bind successfully to port %s\n", argv[1]);
   }
 
-  freeaddrinfo(serverInfo);
+  //memset(&hints, 0, sizeof(struct addrinfo));
+  //hints.ai_socktype = SOCK_DGRAM;
+  //hints.ai_family   = AF_UNSPEC;
+  //hints.ai_flags    = AI_PASSIVE;
+
+  ////get address info
+  //if ((result = getaddrinfo(NULL, argv[1], &hints, &serverInfo)) != 0) {
+  //  fprintf(stderr, "get local address with port %s addrinfo failed\n", argv[1]);
+  //  return 1;
+  //}
+
+
+  //for (index = serverInfo; index != NULL; index = index->ai_next) {
+  //  if ((servSock = socket(index->ai_family, index->ai_socktype, index->ai_protocol)) == -1) {
+  //    //fprintf(stderr, "create socket for  server %s %s failed\n", argv[1], argv[2]);
+  //    continue;
+  //  }
+  //  break;
+  //}
+
+  //if (index == NULL) {
+  //  fprintf(stderr, "create socket for  port %s failed\n", argv[1]);
+  //  return 1;
+  //}
+
+  //if ( (result = bind(servSock, index->ai_addr, index->ai_addrlen)) == -1) {
+  //  fprintf(stderr, "bind to specific port  %s failed\n", argv[1]);
+  //  return 1;
+  //} else {
+  //  printf("bind to port %s successfully\n", argv[1]);
+  //}
+
+  //freeaddrinfo(serverInfo);
 
   // start to recv and send data
   Resf resf;
