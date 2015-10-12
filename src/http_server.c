@@ -46,7 +46,9 @@ int main(int argc, char * argv[]) {
 	printf("bind failed to port %s\n", argv[1]);
 	return 1;
   } else {
-	printf("bind successfully to port %s\n", argv[1]);
+	char ip[20] = {0};
+	inet_ntop(AF_INET, &(addr_in.sin_addr), ip,  19);
+	printf("bind successfully to %s:%s\n", ip, argv[1]);
   }
 
   //memset(&hints, 0, sizeof(struct addrinfo));
