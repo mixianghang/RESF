@@ -3,4 +3,4 @@ autoreconf -i
 automake
 autoconf
 ./configure
-make CFLAGS="-pthread"
+make CFLAGS+="-pthread"

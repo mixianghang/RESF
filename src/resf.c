@@ -577,6 +577,7 @@ void * startRecv( void * resfvoid) {
   FD_SET(resf->sockFd, &orignFds);
 
   while(1) {
+	  //printf("i am receiving \n");
 	segment seg;
 	// check whether the sock has data to read
 	tempFds = orignFds;
@@ -599,7 +600,7 @@ void * startRecv( void * resfvoid) {
 	  //printf("%s %s recv data from sock failed, %d \n", __FILE__, __func__, segLen);
 	  continue;
 	} else {
-	  //printf("%s %s recv from sock %d\n %s", __FILE__, __func__, segLen, segBuff + 13);
+	  printf("%s %s recv from sock %d\n %s", __FILE__, __func__, segLen, segBuff + 13);
 	}
 	//printf("%s %s new segment recved seq %d ack %d dataLen %d rwnd %d flag %d lastAcked %d lastSent %d lastWrite %d lastRecved %d lastRead %d\n", __FILE__, __func__, seg.seqNum, seg.ackNum, seg.dataLen, seg.rwnd, seg.flags, resf->lastAcked, resf->lastSent, resf->lastWrite, resf->lastRecved, resf->lastRead);
 
