@@ -30,6 +30,7 @@ int main(int argc, char * argv[]) {
   int result;
   int serverPort;
   unsigned char buffer[HTTP_CLIENT_BUFFER];
+  //unsigned char buffer[65536];
   Resf resf;
 
   if (argc < 5) {
@@ -167,11 +168,13 @@ int main(int argc, char * argv[]) {
 	  printf("%s", buffer);
 	}
 	//printf(" %s\n",buffer);
-	//printf("tempLen %d, buffer len %d result %d lesf %d\n", tempLen, strlen(buffer), result, left);
+	//printf("tempLen %d, buffer len %d result %d left %d lastRecv %d lastRead %d\n", tempLen, strlen(buffer), result, left, resf.lastRecved, resf.lastRead);
   }
-  fclose(fp);
+  if (fp!= NULL) {
+	  fclose(fp);
+  }
 
-  printf("%s %s recv from  server %d\n", __FILE__, __func__, len);
+  printf("%s %s recv successfully from  server with dataLen %d\n", __FILE__, __func__, len);
   if (argc >= 6) {
 	printf("request file content has been saved into file %s in current directory\n", argv[5]);
   }

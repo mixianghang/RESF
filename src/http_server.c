@@ -167,7 +167,7 @@ int main(int argc, char * argv[]) {
 	  return 1;
 	}
 
-	printf("%s %s lastRecved %d lastRead %d lastsent %d lastwrite %d, lastAcked %d\n", __FILE__, __func__, resf.lastRecved, resf.lastRead, resf.lastSent, resf.lastWrite, resf.lastAcked);
+	//printf("%s %s lastRecved %d lastRead %d lastsent %d lastwrite %d, lastAcked %d\n", __FILE__, __func__, resf.lastRecved, resf.lastRead, resf.lastSent, resf.lastWrite, resf.lastAcked);
 	while (resf.lastWrite != resf.lastSent || resf.lastSent != resf.lastWrite || resf.lastAcked != resf.lastSent) {
 	  sleep(1);
 	//printf("%s %s lastRecved %d lastRead %d lastsent %d lastwrite %d, lastAcked %d\n", __FILE__, __func__, resf.lastRecved, resf.lastRead, resf.lastSent, resf.lastWrite, resf.lastAcked);

@@ -246,6 +246,7 @@ void * startSend( void * voidresf) {
 	  pthread_cond_timedwait(&(resf->unsentDataCond), &(resf->unsentDataMutex), &now);
 	  pthread_mutex_unlock(&(resf->unsentDataMutex));
 	  timeSum += resf->sendWaitTimeInterval;
+	  usleep(100000);
 	  if (resf->lastSent == resf->lastWrite && resf->lastSent == resf->lastAcked) {
 		if (resf->sendWaitTime && timeSum >= resf->sendWaitTime) {
 		  printf("%s %s no data to send or ack for %d ms\n",__FILE__, __func__, timeSum); 
@@ -276,6 +277,7 @@ void * startSend( void * voidresf) {
 
 // prepare and send
 int prepareAndSend(Resf * resf) {
+  //printf("start send while acked %d sent %d  write %d\n", resf->lastAcked, resf->lastSent, resf->lastWrite);;
   pthread_mutex_lock(&(resf->sendNewDataMutex));
 // check if we can send data right now.
   int leftWnd;// some windown size is used by unacked data
@@ -290,6 +292,10 @@ int prepareAndSend(Resf * resf) {
 	leftWnd = wndLimit - (resf->lastSent - resf->lastAcked);
   } else {
 	leftWnd = wndLimit - (SEND_BUFFER_SIZE - resf->lastAcked + resf->lastSent);
+  }
+  
+  if (leftWnd == 0) { // at least send some
+	  leftWnd = MAX_SEG_SIZE;
   }
   //calculate the constrain of leftwnd and left unsent data
   if (resf->lastSent <= resf->lastWrite) {
@@ -600,7 +606,7 @@ void * startRecv( void * resfvoid) {
 	  //printf("%s %s recv data from sock failed, %d \n", __FILE__, __func__, segLen);
 	  continue;
 	} else {
-	  printf("%s %s recv from sock %d\n %s", __FILE__, __func__, segLen, segBuff + 13);
+	  //printf("%s %s recv from sock %d\n %s", __FILE__, __func__, segLen, segBuff + 13);
 	}
 	//printf("%s %s new segment recved seq %d ack %d dataLen %d rwnd %d flag %d lastAcked %d lastSent %d lastWrite %d lastRecved %d lastRead %d\n", __FILE__, __func__, seg.seqNum, seg.ackNum, seg.dataLen, seg.rwnd, seg.flags, resf->lastAcked, resf->lastSent, resf->lastWrite, resf->lastRecved, resf->lastRead);
 
@@ -767,7 +773,16 @@ int startResf(Resf * resf) {
   if (pthread_mutex_init(&(resf->unsentDataMutex), NULL)) {// initialize a mutex
 	return 1;
   }
+  if (pthread_mutex_init(&(resf->newRecvSpaceMutex), NULL)) {// initialize a mutex
+	return 1;
+  }
+  if (pthread_mutex_init(&(resf->sendNewDataMutex), NULL)) {// initialize a mutex
+	return 1;
+  }
   if (pthread_cond_init(&(resf->unsentDataCond), NULL)) {// initialize a condition
+	return 1;
+  }
+  if (pthread_cond_init(&(resf->newRecvSpaceCond), NULL)) {// initialize a condition
 	return 1;
   }
 
