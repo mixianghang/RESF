@@ -18,3 +18,5 @@ missing
 configure
 autom4te.cache/
 Makefile
+configure.scan
+configure.ac.bak

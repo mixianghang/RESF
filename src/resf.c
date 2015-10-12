@@ -476,7 +476,7 @@ int congestWhenDup3(Resf * resf) {
   }
   memset(status, 0, sizeof status);
   getCongestStatus(status, resf->cstatus);
-  printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
+  //printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
   return 0;
 }
 
@@ -493,7 +493,7 @@ int congestWhenNDup(Resf *resf) {
   }
   memset(status, 0, sizeof status);
   getCongestStatus(status, resf->cstatus);
-  printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
+  //printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
   return 0;
 }
 
@@ -516,7 +516,7 @@ int congestWhenTimeout(Resf *resf) {
   }
   memset(status, 0, sizeof status);
   getCongestStatus(status, resf->cstatus);
-  printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
+  //printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
   //printf("%s %s after cwnd %d cwnd status %s\n",__FILE__, __func__, resf->cwnd, status);
   return 0;
 }
@@ -544,7 +544,7 @@ int congestWhenNAck(Resf *resf) {
 
   memset(status, 0, sizeof status);
   getCongestStatus(status, resf->cstatus);
-  printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
+  //printf("%s %s cwnd %d ssthresh %d cwnd status %s\n",__FILE__, __func__, resf->cwnd,resf->ssthresh, status);
   //printf("%s %s after new ack, cwnd %d  %d \n", __FILE__, __func__, resf->cwnd, resf->ssthresh);
 
   return 0;
