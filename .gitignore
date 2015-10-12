@@ -1,0 +1,20 @@
+# autotools
+*.la
+*.lo
+*.m4
+*.o
+.deps/
+.libs/
+tags
+INSTALL
+compile
+config.*
+depcomp*
+INSTALL
+install-sh*
+Makefile.in
+stamp-h1
+missing
+configure
+autom4te.cache/
+Makefile

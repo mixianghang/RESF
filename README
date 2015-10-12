@@ -1,0 +1,27 @@
+Compile:
+make
+
+Execute Server:
+
+cd bin
+./server 8888 65534
+
+Usage: ./server port rwnd
+--port: local port number to which the server listen
+--rwnd: initial receive window of remote client, must be less than 65536
+
+Execute Client:
+
+cd bin
+./client 127.0.0.1 8888 65534 index.html saveToMe.html
+
+Usage: ./client address port rwnd remoterFileName [localFileName]
+--address: ip address of remote server
+--port: port number of the remote server
+--rwnd: initial receive window of remote server, must be less than 65536
+--remoteFileName: the request file name
+--localFileName: optional, the name of local file to save received file content
+ if not provided, will print the content to console
+
+
+
